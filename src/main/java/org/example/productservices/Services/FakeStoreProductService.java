@@ -5,7 +5,6 @@ import org.example.productservices.Models.Product;
 import org.example.productservices.dtos.FakeStoreProductDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +59,6 @@ public class FakeStoreProductService implements ProductService{
 
     @Override
     public Product createProduct(Product product) {
-        //update product to fakestoreapi
-        //https://fakestoreapi.com/products/id
-
         FakeStoreProductDTO FakeStoreProductDTO = new FakeStoreProductDTO();
         FakeStoreProductDTO.setId(product.getId());
         FakeStoreProductDTO.setTitle(product.getTitle());
@@ -81,9 +77,6 @@ public class FakeStoreProductService implements ProductService{
 
     @Override
     public Product updateProduct(Product product) {
-
-        //update product to fakestoreapi
-
         FakeStoreProductDTO FakeStoreProductDTO = new FakeStoreProductDTO();
         FakeStoreProductDTO.setId(product.getId());
         FakeStoreProductDTO.setTitle(product.getTitle());
@@ -96,27 +89,20 @@ public class FakeStoreProductService implements ProductService{
                 "https://fakestoreapi.com/products/" + product.getId(),
                 FakeStoreProductDTO
         );
-
         return product;
-
     }
 
     @Override
     public void deleteProduct(Long id) {
-
         restTemplate.delete("https://fakestoreapi.com/products/" + id);
-
     }
 
     @Override
     public List<Product> getProductsByCategory(String categoryName) {
-
-        //'https://fakestoreapi.com/products/category/jewelery'
         FakeStoreProductDTO[] productDtos = restTemplate.getForObject(
                 "https://fakestoreapi.com/products/category/" + categoryName,
                 FakeStoreProductDTO[].class
         );
-
         if (productDtos != null) {
             List<Product> products = new ArrayList<>();
             for (FakeStoreProductDTO dto : productDtos) {
@@ -133,20 +119,15 @@ public class FakeStoreProductService implements ProductService{
             }
             return products;
         }
-
         return null;
-
-
     }
 
     @Override
     public List<String> getAllCategories() {
-        //https://fakestoreapi.com/products/categories
         String[] categories = restTemplate.getForObject(
                 "https://fakestoreapi.com/products/categories",
                 String[].class
         );
-
         if (categories != null) {
             List<String> categoryList = new ArrayList<>();
             for (String category : categories) {
@@ -155,8 +136,5 @@ public class FakeStoreProductService implements ProductService{
             return categoryList;
         }
         return null;
-
     }
-
-
 }
